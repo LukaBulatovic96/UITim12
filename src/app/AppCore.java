@@ -1,5 +1,6 @@
 package app;
 
+import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
@@ -10,7 +11,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Observable;
 
-import javax.swing.JOptionPane;
+import javax.swing.*;
+import javax.xml.transform.Result;
 
 import view.MainFrame;
 
@@ -19,8 +21,8 @@ public class AppCore {
 	private static AppCore instance = null;
 	
 	private static String ADRESS = "jdbc:mysql://localhost:3306/";//localhost:3306/javabase//"jdbc:jtds:sqlserver://147.91.175.155/";
-	private static String DATABASE = "ui";//testdb
-	private static String USERNAME = "root", PASSWORD = "1234";
+	private static String DATABASE = "adventureworks";//testdb
+	private static String USERNAME = "******", PASSWORD = "*****";
 	
 	private MainFrame mainFrame;
 	
@@ -36,7 +38,6 @@ public class AppCore {
 	public AppCore() {
 		
 		connectToDatabase();
-		initModel();
 		initFrame();
 		initActions();
 	}
@@ -48,9 +49,21 @@ public class AppCore {
 		//mainFrame.getMainPanel().getSubmitButton().addActionListener(updateText);
 		
 	}
-	private void initModel() {
+	public void initModel(ResultSet rezult) throws SQLException {
+
+		JDialog prikaz = new JDialog(mainFrame, "Rezultat upita", true);
+		prikaz.setSize(800,600);
+		prikaz.setLocationRelativeTo(mainFrame);
+
+		JTable tabela = new JTable();
+		tabela.setModel(TabelaModel.make(rezult));
+
+		JScrollPane skrol = new JScrollPane(tabela);
+		prikaz.getContentPane().add(skrol);
+		prikaz.setVisible(true);
 	
 	}
+
 	
 	private void initFrame() {
 		mainFrame=new MainFrame();
