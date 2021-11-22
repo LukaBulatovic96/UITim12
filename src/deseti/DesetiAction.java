@@ -38,30 +38,29 @@ private void testSQL() throws SQLException {
 		
 		Statement stmt = AppCore.getInstance().getCon().createStatement();
 		
-		String statementString="select * from product";
+		String statementString="select * from AvailableLanguages";
 		
 		ResultSet rs = stmt.executeQuery(statementString);
 
 		ResultSetMetaData rsmd = rs.getMetaData();
-	
-		
-		
+
+
 		int columnsNumber = rsmd.getColumnCount();
 		for (int i = 1; i <= columnsNumber; i++ ) {
-			  String name = rsmd.getColumnName(i);
-			  System.out.print(name + " ");
-			}
+			String name = rsmd.getColumnName(i);
+			System.out.print(name + " | ");
+		}
 		System.out.println();
 		System.out.println("____________________");
-		
+
 		while(rs.next()) {
 			for (int j2 = 1; j2 <= columnsNumber; j2++) {
-				System.out.print(rs.getString(j2) + " ");
+				System.out.print(rs.getString(j2) + " | ");
 			}
 			System.out.println();
 		}
-		
-		
+
+
 	}
 
 }
