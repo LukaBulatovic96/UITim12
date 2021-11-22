@@ -1,10 +1,7 @@
 package deveti;
 
 import java.awt.event.ActionEvent;
-import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 
 import javax.swing.AbstractAction;
 
@@ -36,11 +33,22 @@ public class DevetiAction extends AbstractAction{
 	
 private void testSQL() throws SQLException {
 		
-		Statement stmt = AppCore.getInstance().getCon().createStatement();
-		
-		String statementString="CALL Customers_Countries('Mountain-500')";
-		
-		ResultSet rs = stmt.executeQuery(statementString);
+
+		PreparedStatement preped = AppCore.getInstance().getCon().prepareStatement("CALL Customers_Countries( ? )");
+
+		String parametar = devetiPanel.getTextArea().getText().trim();
+
+		System.out.println("Parametar je: " + parametar + "\n");
+
+		if (parametar.equalsIgnoreCase("")){
+			parametar="Water bottle";
+			System.out.println(parametar + " - (default primer parametra)");
+		}
+
+
+		preped.setString(1,parametar);
+
+		ResultSet rs = preped.executeQuery();
 
 		AppCore.getInstance().initModel(rs);
 	}
